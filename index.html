@@ -7,8 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,500&family=Poppins:wght@200;300;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,500&family=Poppins:wght@200;300;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 <style>
     * {
@@ -41,11 +43,22 @@
         margin-bottom: 50px;
         text-align: center;
     }
-    .backend-output{
+
+    .backend-output {
         text-align: center;
-        
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
     }
-    .backend-output span{
+
+    .backend-output img{
+        height: 100px;
+        width: 100px;
+        justify-self: center;
+        align-self: center;
+    }
+
+    .backend-output span {
         font-size: 20px;
     }
 
@@ -60,9 +73,11 @@
         margin: 20px;
         padding: 20px;
     }
-    .user-options div:hover{
+
+    .user-options div:hover {
         background-color: white;
     }
+
     .user-options div img {
         height: 80px;
     }
@@ -72,33 +87,92 @@
     <div class="main-wrapper">
         <div class="heading">
             <h1>Rock, Paper & Scissors</h1>
+            <h4>By Dev Watts & Jasneet Singh</h4>
         </div>
-        <div class="backend-output">
+        <div id="output" class="backend-output">
             <span>Please click on your choice below</span>
         </div>
         <div class="user-options">
-            <div>
-                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/raised-fist_270a.png"
+            <div class="rock">
+                <img class="rock"
+                    src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/raised-fist_270a.png"
                     alt="">
             </div>
-            <div>
-                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/raised-hand_270b.png"
+            <div class="paper">
+                <img class="paper"
+                    src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/raised-hand_270b.png"
                     alt="">
             </div>
-            <div>
-                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/victory-hand_270c-fe0f.png"
+            <div class="scissor">
+                <img class="scissor"
+                    src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/victory-hand_270c-fe0f.png"
                     alt="">
             </div>
         </div>
     </div>
     <script>
-    var request = new XMLHttpRequest();
-    request.open("GET", "https://watts-flask-app2.herokuapp.com/", true);
-    request.send();
-    request.onload = function () {
-      var data = JSON.parse(this.response);
-      console.log(data);
-    }
+        var user_action = "";
+        var computer_action = "";
+        var x = document.querySelectorAll('.user-options div');
+
+        for (let i = 0; i < x.length; i++) {
+            x[i].addEventListener('click', (e) => {
+                sendRequest(e.target.className);
+            })
+        }
+
+        async function sendRequest(value) {
+            user_action = value;
+            var request = new XMLHttpRequest();
+            request.open("GET", "https://watts-flask-app2.herokuapp.com/", true);
+            request.send();
+            request.onload = function () {
+                computer_action = this.response;
+                console.log(computer_action,user_action)
+                var output = checkSigns(computer_action,user_action);
+                console.log(output)
+                if(output == "user"){
+                    document.getElementById('output').innerHTML = `
+                    <img 
+                    src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/grinning-face-with-big-eyes_1f603.png"
+                    alt="">
+                    <span>The computer chose ${computer_action} & <br> You chose ${user_action}, You Won!!</span>
+                    `;
+                }else if(output == "tie"){
+                    document.getElementById('output').innerHTML = `
+                    <img 
+                    src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/face-in-clouds_1f636-200d-1f32b-fe0f.png"
+                    alt="">
+                    <span>The computer chose ${computer_action} & <br> You chose ${user_action}, Its a Tie!!</span>
+                    `;
+                }else if(output == "comp"){
+                    document.getElementById('output').innerHTML = `
+                    <img 
+                    src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/worried-face_1f61f.png"
+                    alt="">
+                    <span>The computer chose ${computer_action} & <br> You chose ${user_action}, You Lost!!</span>
+                    `;
+                }
+            }
+        }
+
+        function checkSigns(comp,user){
+            if(comp == user){
+                return "tie"
+            }else if(comp == "rock" && user == "paper"){
+                return "user";
+            }else if(comp == "rock" && user == "scissor"){
+                return "comp";
+            }else if(comp == "paper" && user == "rock"){
+                return "comp";
+            }else if(comp == "paper" && user == "scissor"){
+                return "user";
+            }else if(comp == "scissor" && user == "paper"){
+                return "comp";
+            }else if(comp == "scissor" && user == "rock"){
+                return "user";
+            }
+        }
     </script>
 </body>
 
