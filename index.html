@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,500&family=Poppins:wght@200;300;500;600;700&display=swap" rel="stylesheet">
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background-color: brown;
+        font-family: 'Poppins', sans-serif;
+        height: 100vh;
+        width: 100%;
+        color: white;
+    }
+
+    .main-wrapper {
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        margin-top: 50px;
+        border: 5px solid white;
+        min-height: 80vh;
+    }
+
+    .heading {
+        margin-top: 50px;
+        margin-bottom: 50px;
+        text-align: center;
+    }
+    .backend-output{
+        text-align: center;
+        
+    }
+    .backend-output span{
+        font-size: 20px;
+    }
+
+    .user-options {
+        display: flex;
+        padding: 20px;
+    }
+
+    .user-options div {
+        border: 5px solid white;
+        border-radius: 100px;
+        margin: 20px;
+        padding: 20px;
+    }
+    .user-options div:hover{
+        background-color: white;
+    }
+    .user-options div img {
+        height: 80px;
+    }
+</style>
+
+<body>
+    <div class="main-wrapper">
+        <div class="heading">
+            <h1>Rock, Paper & Scissors</h1>
+        </div>
+        <div class="backend-output">
+            <span>Please click on your choice below</span>
+        </div>
+        <div class="user-options">
+            <div>
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/raised-fist_270a.png"
+                    alt="">
+            </div>
+            <div>
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/raised-hand_270b.png"
+                    alt="">
+            </div>
+            <div>
+                <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/facebook/327/victory-hand_270c-fe0f.png"
+                    alt="">
+            </div>
+        </div>
+    </div>
+    <script>
+    var request = new XMLHttpRequest();
+    request.open("GET", "https://watts-flask-app2.herokuapp.com/", true);
+    request.send();
+    request.onload = function () {
+      var data = JSON.parse(this.response);
+      console.log(data);
+    }
+    </script>
+</body>
+
+</html>
